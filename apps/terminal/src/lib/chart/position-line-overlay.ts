@@ -2,16 +2,16 @@ import Big from "big.js";
 import { registerOverlay } from "klinecharts";
 import { colorToHex, colorToRgba, getChartColors } from "@/components/trade/chart/theme-colors";
 
-const ORDER_LINE_NAME = "orderLine";
+const POSITION_LINE_NAME = "positionLine";
 
 let registered = false;
 
-export function registerOrderLineOverlay() {
+export function registerPositionLineOverlay() {
 	if (registered) return;
 	registered = true;
 
 	registerOverlay({
-		name: ORDER_LINE_NAME,
+		name: POSITION_LINE_NAME,
 		needDefaultPointFigure: false,
 		needDefaultXAxisFigure: false,
 		needDefaultYAxisFigure: false,
@@ -22,16 +22,16 @@ export function registerOrderLineOverlay() {
 			const y = coordinates[0]?.y;
 			if (y === undefined) return [];
 
-			const side = overlay.extendData?.side as "B" | "A" | undefined;
-			const label = (overlay.extendData?.label as string | undefined) ?? "";
+			const isLong = overlay.extendData?.isLong as boolean | undefined;
 
 			const colors = getChartColors();
-			const marketColor = side === "B" ? colors.green : colors.red;
+			const marketColor = isLong ? colors.green : colors.red;
 			const color = colorToHex(marketColor);
-			const lineColor = colorToRgba(marketColor, 0.35);
+			const lineColor = colorToRgba(marketColor, 0.5);
 			const bgColor = colorToHex(colors.background);
-			const borderColor = colorToRgba(marketColor, 0.7);
+			const borderColor = colorToRgba(marketColor, 0.8);
 
+			const label = isLong ? "Long" : "Short";
 			const rawPrice = overlay.points[0]?.value;
 			const priceText = rawPrice != null ? Big(rawPrice).toFixed(precision.price) : "";
 
@@ -103,4 +103,4 @@ export function registerOrderLineOverlay() {
 	});
 }
 
-export { ORDER_LINE_NAME };
+export { POSITION_LINE_NAME };
