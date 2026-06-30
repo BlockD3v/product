@@ -1,5 +1,5 @@
-export const APP_NAME = "HypeTerminal";
-export const APP_VERSION = "v0.1.0";
+export const APP_NAME = "pumpEVM.fun";
+export const APP_VERSION = "v1.2.4";
 
 export const FALLBACK_VALUE_PLACEHOLDER = "-";
 export const FORMAT_COMPACT_THRESHOLD = 10_000;
@@ -32,7 +32,7 @@ export const STORAGE_KEYS = {
 
 export const RQ_CACHE_BUSTER = "v1";
 
-export const GITHUB_URL = "https://github.com/vipineth/hypeterminal/";
+export const GITHUB_URL = "https://github.com/";
 export const TOKEN_ICON_BASE_URL = "https://app.hyperliquid.xyz/coins";
 
-export const LIFI_INTEGRATOR = "hypeterminal";
+export const LIFI_INTEGRATOR = "pumpEVM.fun";

@@ -26,6 +26,7 @@ const buttonVariants = cva(
 				neutral: "",
 				error: "",
 				inverse: "",
+				pump: "",
 			},
 			size: {
 				xxs: "py-0.5 px-1.5 text-2xs gap-1",
@@ -84,6 +85,32 @@ const buttonVariants = cva(
 				intent: "inverse",
 				className:
 					"border-stroke-inverse-strong text-fg-inverse hover:bg-fill-inverse-hover active:bg-fill-inverse-press data-disabled:text-fg-disabled data-disabled:border-stroke-inverse-disabled",
+			},
+			//// For filled variant with pump intent
+			{
+				variant: "filled",
+				intent: "pump",
+				className:
+					"bg-[#00ffaa] text-black hover:bg-[#00e699] active:bg-[#00cc88] data-disabled:text-fg-disabled data-disabled:bg-fill-disabled",
+			},
+			// For outline variant with pump intent
+			{
+				variant: "outline",
+				intent: "pump",
+				className:
+					"border-[#00ffaa] text-[#00ffaa] hover:bg-[#00ffaa]/10 active:bg-[#00ffaa]/20 data-disabled:text-fg-disabled data-disabled:border-stroke-disabled",
+			},
+			// For ghost variant with pump intent
+			{
+				variant: "ghost",
+				intent: "pump",
+				className: "text-[#00ffaa] hover:bg-[#00ffaa]/10 active:bg-[#00ffaa]/20 data-disabled:text-fg-disabled",
+			},
+			// For link variant with pump intent
+			{
+				variant: "link",
+				intent: "pump",
+				className: "text-[#00ffaa] hover:opacity-80 data-disabled:text-fg-disabled",
 			},
 
 			{

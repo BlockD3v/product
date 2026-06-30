@@ -53,7 +53,7 @@
 		color-scheme: dark;
 
 		/* Match apps/terminal/src/styles.css dark-mode tokens exactly. */
-		--bg-base: #12131a;
+		--bg-base: #000000;
 		--bg-raised: #1d1e26;
 		--bg-overlay: #292b33;
 		--bg-sunken: #000000;

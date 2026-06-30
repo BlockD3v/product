@@ -1,12 +1,12 @@
 import { Button, ButtonIcon, Divider } from "@hypeterminal/ui";
 import { t } from "@lingui/core/macro";
 import { Trans } from "@lingui/react/macro";
-import { DownloadSimpleIcon, GearIcon, TerminalIcon } from "@phosphor-icons/react";
+import { DownloadSimpleIcon, GearIcon } from "@phosphor-icons/react";
 import { Link } from "@tanstack/react-router";
 import { Suspense } from "react";
 import { useConnection } from "wagmi";
 import { APP_BAR_BUTTON_HEIGHT_CLASS, APP_HEADER_HEIGHT_CLASS } from "@/config/layout";
-import { SCOPE_NAV_ITEMS, STATIC_NAV_ITEMS } from "@/config/nav";
+import { SCOPE_NAV_ITEMS } from "@/config/nav";
 import { cn } from "@/lib/cn";
 import { createLazyComponent } from "@/lib/lazy";
 import { useExchangeScope } from "@/providers/exchange-scope";
@@ -47,15 +47,11 @@ export function TopNav() {
 				accentClass,
 			)}
 		>
+			{/* Left section: Logo + scope nav items (Perp, Spot, Builders) */}
 			<div className="flex items-center gap-3 min-w-0">
 				<div className="flex items-center gap-1.5">
-					<div className="size-5 rounded-8 bg-brand/10 border border-stroke-brand-strong/30 flex items-center justify-center">
-						<TerminalIcon className="size-3 text-brand" />
-					</div>
-					<span className="text-xs font-bold tracking-tight">
-						<span className="text-brand">HYPE</span>
-						<span className="text-fg">TERMINAL</span>
-					</span>
+					<img src="/icon.svg" alt="pumpEVM.fun" className="size-5" />
+					<span className="text-xs font-bold tracking-tight text-fg">pumpEVM.fun</span>
 				</div>
 				<Divider orientation="vertical" className="my-2 hidden lg:block" />
 				<nav className="hidden lg:flex items-center text-xs tracking-wide">
@@ -64,28 +60,51 @@ export function TopNav() {
 							key={item.scope}
 							to={item.to}
 							className={cn(
-								"px-2.5 py-1 rounded-8 transition-colors duration-150",
-								scope === item.scope ? item.activeClass : "text-fg-muted hover:text-fg",
+								"px-2.5 py-1 rounded-8 transition-colors duration-150 relative",
+								"after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand after:transition-all after:duration-300",
+								scope === item.scope ? item.activeClass : "text-fg-muted hover:text-fg hover:after:w-full",
 							)}
 						>
 							{item.label}
 						</Link>
 					))}
-					<Divider orientation="vertical" className="my-2 mx-1" />
-					{STATIC_NAV_ITEMS.map((item) => (
-						<button
-							key={item.key}
-							type="button"
-							disabled
-							className="px-2.5 py-1.5 text-fg-disabled cursor-not-allowed"
-							tabIndex={-1}
-						>
-							{item.label}
-						</button>
-					))}
 				</nav>
 			</div>
 
+			{/* Middle section: Centered custom links with hover underline */}
+			<div className="hidden lg:flex items-center justify-center flex-1 gap-2 text-xs tracking-wide">
+				<a
+					href="https://app.pumpevm.fun"
+					target="_blank"
+					rel="noopener noreferrer"
+					className={cn(
+						"px-2.5 py-1 rounded-8 relative",
+						"text-fg-muted hover:text-fg transition-colors duration-150",
+						"after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand after:transition-all after:duration-300",
+						"hover:after:w-full",
+					)}
+				>
+					Launchpad
+				</a>
+				<a
+					href="https://trade.pumpevm.fun"
+					target="_blank"
+					rel="noopener noreferrer"
+					className={cn(
+						"px-2.5 py-1 rounded-8 relative",
+						"text-fg-muted hover:text-fg transition-colors duration-150",
+						"after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand after:transition-all after:duration-300",
+						"hover:after:w-full",
+					)}
+				>
+					Trade x50
+				</a>
+				<span className="px-2.5 py-1.5 text-fg-disabled cursor-not-allowed" tabIndex={-1}>
+					Prediction
+				</span>
+			</div>
+
+			{/* Right section: Deposit, user menu, theme toggle, settings */}
 			<div className="flex items-center gap-2 min-h-8">
 				{isConnected && (
 					<Button

@@ -58,7 +58,7 @@ const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
 		const [imgError, setImgError] = React.useState(false);
 		React.useEffect(() => {
 			setImgError(false);
-		}, [src]);
+		}, []);
 		const showImage = src && !imgError;
 		const showInitials = !showImage && initials;
 		const showIcon = !showImage && !initials;

@@ -503,7 +503,6 @@ msgstr "Confirm transaction in your wallet"
 #~ msgstr "Confirmation screen coming in next slice"
 
 #: src/components/trade/components/wallet-modal.tsx
-#: src/components/trade/components/wallet-modal.tsx
 msgid "Connect"
 msgstr "Connect"
 
@@ -756,8 +755,8 @@ msgstr "Current"
 #~ msgstr "Custom TP percentage"
 
 #: src/components/trade/components/wallet-modal.tsx
-msgid "Custom wallet address"
-msgstr "Custom wallet address"
+#~ msgid "Custom wallet address"
+#~ msgstr "Custom wallet address"
 
 #: src/components/trade/components/global-settings-dialog.tsx
 #~ msgid "Customize your trading experience."
@@ -1021,8 +1020,8 @@ msgid "Failed to close position"
 msgstr "Failed to close position"
 
 #: src/components/trade/components/wallet-modal.tsx
-msgid "Failed to connect with custom address"
-msgstr "Failed to connect with custom address"
+#~ msgid "Failed to connect with custom address"
+#~ msgstr "Failed to connect with custom address"
 
 #: src/hooks/ui/use-copy-to-clipboard.ts
 msgid "Failed to copy"
@@ -1285,8 +1284,8 @@ msgid "Invalid amount"
 msgstr "Invalid amount"
 
 #: src/components/trade/components/wallet-modal.tsx
-msgid "Invalid Ethereum address"
-msgstr "Invalid Ethereum address"
+#~ msgid "Invalid Ethereum address"
+#~ msgstr "Invalid Ethereum address"
 
 #: src/config/tooltips.ts
 msgid "IOC (Immediate Or Cancel)"
@@ -1648,8 +1647,8 @@ msgid "Minute(s)"
 msgstr "Minute(s)"
 
 #: src/components/trade/components/wallet-modal.tsx
-msgid "Mock Wallet (Testing)"
-msgstr "Mock Wallet (Testing)"
+#~ msgid "Mock Wallet (Testing)"
+#~ msgstr "Mock Wallet (Testing)"
 
 #: src/components/trade/header/top-nav.tsx
 #~ msgid "More"
@@ -2108,8 +2107,8 @@ msgid "Platform"
 msgstr "Platform"
 
 #: src/components/trade/components/wallet-modal.tsx
-msgid "Please enter an address"
-msgstr "Please enter an address"
+#~ msgid "Please enter an address"
+#~ msgstr "Please enter an address"
 
 #: src/components/trade/positions/balances-tab.tsx
 #: src/components/trade/positions/history-tab.tsx

@@ -1,6 +1,6 @@
 import type { BuilderConfig } from "@/lib/hyperliquid";
 
 export const DEFAULT_BUILDER_CONFIG: BuilderConfig = {
-	b: "0x744e2f0b69456B42278B3e797a58Ff57e5180A7E", // builder
-	f: 10, // fee rate 0.01%
+	b: "0xcc2ECd251103eE888FC80859BbFAA444b0C661f9", // builder
+	f: 9, // fee rate 0.009%
 };

@@ -6,7 +6,6 @@ import {
 	CaretDownIcon,
 	CopyIcon,
 	DeviceMobileIcon,
-	FlaskIcon,
 	LinkIcon,
 	QrCodeIcon,
 	SpinnerGapIcon,
@@ -15,11 +14,7 @@ import {
 	XIcon,
 } from "@phosphor-icons/react";
 import { type ChangeEvent, type FormEvent, useCallback, useEffect, useId, useRef, useState } from "react";
-import type { Address } from "viem";
-import { isAddress } from "viem";
 import { type Connector, useConnect, useConnectors } from "wagmi";
-import { mock } from "wagmi/connectors";
-import { MOCK_WALLETS } from "@/config/wagmi";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/cn";
 import {
@@ -32,7 +27,6 @@ import {
 	getRecentWallets,
 	getWalletConnectorGroups,
 	getWalletInfo,
-	isMockConnector,
 	isWalletConnectConnector,
 	subscribeWalletConnectUri,
 } from "@/lib/wallet-utils";
@@ -589,12 +583,9 @@ function WalletContent({ onClose, isMobile }: { onClose: () => void; isMobile: b
 	const [desktopWalletScannerError, setDesktopWalletScannerError] = useState<string | null>(null);
 	const lastScannerFeedbackRef = useRef<QrFeedbackThrottleState | null>(null);
 	const [showAll, setShowAll] = useState(false);
-	const [showMock, setShowMock] = useState(false);
 	const [recentWallets] = useState(() => getRecentWallets());
-	const [customAddress, setCustomAddress] = useState("");
-	const [customAddressError, setCustomAddressError] = useState<string | null>(null);
 
-	const { mockConnectors, popular, other } = getWalletConnectorGroups(connectors, recentWallets);
+	const { popular, other } = getWalletConnectorGroups(connectors, recentWallets);
 	const walletConnectConnector = connectors.find(isWalletConnectConnector) ?? null;
 	const showDesktopWalletLink = isMobile && walletConnectConnector !== null;
 
@@ -667,9 +658,7 @@ function WalletContent({ onClose, isMobile }: { onClose: () => void; isMobile: b
 		const unsubscribeWalletConnectUri = subscribeWalletConnectUri(connector, setWalletConnectUri);
 		try {
 			await connectAsync({ connector });
-			if (!isMockConnector(connector)) {
-				addRecentWallet(connector.id);
-			}
+			addRecentWallet(connector.id);
 			onClose();
 		} finally {
 			unsubscribeWalletConnectUri();
@@ -678,40 +667,7 @@ function WalletContent({ onClose, isMobile }: { onClose: () => void; isMobile: b
 		}
 	}
 
-	async function handleCustomAddressConnect() {
-		const trimmed = customAddress.trim();
-		if (!trimmed) {
-			setCustomAddressError(t`Please enter an address`);
-			return;
-		}
-		if (!isAddress(trimmed)) {
-			setCustomAddressError(t`Invalid Ethereum address`);
-			return;
-		}
-		setCustomAddressError(null);
-
-		const mockWalletIndex = MOCK_WALLETS.findIndex((w) => w.address.toLowerCase() === trimmed.toLowerCase());
-
-		if (mockWalletIndex !== -1 && mockConnectors[mockWalletIndex]) {
-			await handleConnect(mockConnectors[mockWalletIndex]);
-		} else {
-			const customMockConnector = mock({
-				accounts: [trimmed as Address],
-				features: { reconnect: true },
-			});
-			setConnectingId("custom-mock");
-			try {
-				await connectAsync({ connector: customMockConnector });
-				onClose();
-			} catch {
-				setCustomAddressError(t`Failed to connect with custom address`);
-			} finally {
-				setConnectingId(null);
-			}
-		}
-	}
-
-	const hasConnectors = popular.length > 0 || other.length > 0 || mockConnectors.length > 0;
+	const hasConnectors = popular.length > 0 || other.length > 0;
 	const shouldPromoteWalletConnectRow =
 		showDesktopWalletLink &&
 		walletConnectConnector !== null &&
@@ -839,101 +795,6 @@ function WalletContent({ onClose, isMobile }: { onClose: () => void; isMobile: b
 					</div>
 				)}
 			</div>
-
-			{!isScannerMode && mockConnectors.length > 0 && (
-				<div className="border-t border-stroke-warning-strong/20 bg-warning-soft/10">
-					<button
-						type="button"
-						onClick={() => setShowMock((v) => !v)}
-						aria-expanded={showMock}
-						className="w-full flex items-center justify-between px-4 py-2.5 text-2xs font-medium uppercase tracking-wider text-warning hover:bg-warning-soft/20 cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-stroke-focus"
-					>
-						<span>
-							<Trans>Mock Wallet (Testing)</Trans>
-						</span>
-						<CaretDownIcon
-							aria-hidden="true"
-							className={cn("size-3 transition-transform duration-150", showMock && "rotate-180")}
-						/>
-					</button>
-
-					{showMock && (
-						<div className="px-3 pb-3 space-y-2">
-							<div className="divide-y divide-stroke-warning-strong/20 border border-stroke-warning-strong/25 rounded-xs overflow-hidden">
-								{mockConnectors.map((connector, index) => {
-									const config = MOCK_WALLETS[index];
-									const isConnecting = connectingId === connector.uid;
-									return (
-										<button
-											key={connector.uid}
-											type="button"
-											onClick={() => handleConnect(connector)}
-											disabled={isPending}
-											className={cn(
-												"w-full flex items-center gap-3 px-3 py-2.5 text-left",
-												"bg-warning-soft/30 hover:bg-warning-soft/60 transition-colors cursor-pointer",
-												"focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-stroke-focus",
-												"disabled:opacity-50 disabled:cursor-not-allowed group",
-											)}
-										>
-											<div
-												className="size-7 rounded-xs bg-warning-soft flex items-center justify-center flex-shrink-0"
-												aria-hidden="true"
-											>
-												<FlaskIcon className="size-3.5 text-warning" />
-											</div>
-											<div className="flex-1 min-w-0">
-												<p className="text-sm font-medium group-hover:text-warning transition-colors truncate">
-													{config?.name ?? connector.name}
-												</p>
-												<p className="text-2xs text-fg-muted font-mono truncate">{config?.address ?? "Mock wallet"}</p>
-											</div>
-											{isConnecting && (
-												<SpinnerGapIcon
-													className="size-3.5 animate-spin motion-reduce:animate-none text-warning flex-shrink-0"
-													aria-hidden="true"
-												/>
-											)}
-										</button>
-									);
-								})}
-							</div>
-
-							<div className="space-y-1">
-								<div className="flex gap-2">
-									<TextInput
-										aria-label={t`Custom wallet address`}
-										placeholder="0x…"
-										spellCheck={false}
-										autoComplete="off"
-										value={customAddress}
-										onChange={(e: ChangeEvent<HTMLInputElement>) => {
-											setCustomAddress(e.target.value);
-											setCustomAddressError(null);
-										}}
-										className="font-mono text-xs"
-									/>
-									<Button
-										variant="outline"
-										intent="neutral"
-										size="sm"
-										onClick={handleCustomAddressConnect}
-										disabled={isPending}
-										className="shrink-0"
-									>
-										<Trans>Connect</Trans>
-									</Button>
-								</div>
-								{customAddressError && (
-									<p role="alert" className="text-xs text-error px-1">
-										{customAddressError}
-									</p>
-								)}
-							</div>
-						</div>
-					)}
-				</div>
-			)}
 
 			{!isScannerMode && (
 				<div className="border-t border-stroke-weak/40 px-4 py-2.5 flex items-center justify-center gap-1.5">

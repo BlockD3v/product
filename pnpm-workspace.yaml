@@ -1,3 +1,12 @@
 packages:
   - "apps/*"
   - "packages/*"
+allowBuilds:
+  '@parcel/watcher': true
+  bufferutil: true
+  esbuild: true
+  lefthook: true
+  msgpackr-extract: true
+  msw: true
+  sharp: true
+  utf-8-validate: true
