@@ -1,5 +1,6 @@
 import { ButtonIcon } from "@hypeterminal/ui";
-import { BellIcon, GearIcon, TerminalIcon } from "@phosphor-icons/react";
+import { BellIcon, GearIcon } from "@phosphor-icons/react";
+import { Link } from "@tanstack/react-router";
 import { APP_HEADER_HEIGHT_CLASS } from "@/config/layout";
 import { UI_TEXT } from "@/config/ui-text";
 import { cn } from "@/lib/cn";
@@ -29,9 +30,10 @@ export function MobileHeader({ className }: Props) {
 			<div className={cn(APP_HEADER_HEIGHT_CLASS, "px-2 flex items-center justify-between")}>
 				<div className="flex items-center gap-1">
 					<MobileNavDrawer />
-					<div className="size-6 rounded-8 bg-brand/10 border border-stroke-brand-strong/30 flex items-center justify-center">
-						<TerminalIcon className="size-3.5 text-brand" />
-					</div>
+					<Link to="/" className="flex items-center gap-1.5">
+						<img src="/icon.svg" alt="pumpEVM.fun" className="size-5" />
+						<span className="text-xs font-bold tracking-tight text-fg">pumpEVM.fun</span>
+					</Link>
 				</div>
 
 				<div className="flex items-center gap-0.5">
