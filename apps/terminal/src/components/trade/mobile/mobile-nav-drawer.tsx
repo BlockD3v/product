@@ -5,7 +5,6 @@ import {
 	GearIcon,
 	HammerIcon,
 	ListIcon,
-	TerminalIcon,
 	TrendUpIcon,
 	WalletIcon,
 	XIcon,
@@ -13,7 +12,7 @@ import {
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { useConnection } from "wagmi";
-import { SCOPE_NAV_ITEMS, STATIC_NAV_ITEMS } from "@/config/nav";
+import { SCOPE_NAV_ITEMS } from "@/config/nav";
 import { cn } from "@/lib/cn";
 import { useExchangeScope } from "@/providers/exchange-scope";
 import { useDepositModalActions, useSettingsDialogActions } from "@/stores/use-global-modal-store";
@@ -29,7 +28,7 @@ function ScopeIcon({ scope }: { scope: string }) {
 		case "builders-perp":
 			return <HammerIcon className="size-4 shrink-0" />;
 		default:
-			return <TerminalIcon className="size-4 shrink-0" />;
+			return <TrendUpIcon className="size-4 shrink-0" />;
 	}
 }
 
@@ -60,22 +59,19 @@ export function MobileNavDrawer() {
 
 			<Drawer side="left" open={open} onOpenChange={setOpen}>
 				<DrawerContent className="w-[80vw] max-w-72 flex flex-col p-0">
+					{/* Header with custom logo and name */}
 					<div className="h-12 px-3 flex items-center justify-between border-b border-stroke-weak/60 shrink-0">
-						<div className="flex items-center gap-1.5">
-							<div className="size-5 rounded-8 bg-brand/10 border border-stroke-brand-strong/30 flex items-center justify-center">
-								<TerminalIcon className="size-3 text-brand" />
-							</div>
-							<span className="text-xs font-bold tracking-tight">
-								<span className="text-brand">HYPE</span>
-								<span className="text-fg">TERMINAL</span>
-							</span>
-						</div>
+						<Link to="/" className="flex items-center gap-1.5" onClick={close}>
+							<img src="/icon.svg" alt="pumpEVM.fun" className="size-5" />
+							<span className="text-xs font-bold tracking-tight text-fg">pumpEVM.fun</span>
+						</Link>
 						<ButtonIcon variant="ghost" intent="neutral" size="md" aria-label="Close navigation" onClick={close}>
 							<XIcon className="size-4" />
 						</ButtonIcon>
 					</div>
 
 					<div className="flex-1 flex flex-col overflow-y-auto overflow-x-hidden">
+						{/* Markets section */}
 						<nav className="p-2 flex flex-col" aria-label="Markets">
 							<p className="px-3 py-2 text-2xs font-semibold uppercase tracking-wider text-fg-muted">
 								<Trans>Markets</Trans>
@@ -98,24 +94,44 @@ export function MobileNavDrawer() {
 
 						<Divider className="mx-3" />
 
-						<nav className="p-2 flex flex-col" aria-label="Platform">
+						{/* Apps section: Launchpad, Trade x50, Prediction */}
+						<nav className="p-2 flex flex-col" aria-label="Apps">
 							<p className="px-3 py-2 text-2xs font-semibold uppercase tracking-wider text-fg-muted">
-								<Trans>Platform</Trans>
+								<Trans>Apps</Trans>
 							</p>
-							{STATIC_NAV_ITEMS.map((item) => (
-								<div
-									key={item.key}
-									className="flex items-center justify-between px-3 py-2.5 rounded-xs text-sm text-fg-disabled"
-								>
-									<span>{item.label}</span>
-									<Badge tone="neutral" size="xxs" className="text-fg-disabled">
-										<Trans>Soon</Trans>
-									</Badge>
-								</div>
-							))}
+							<a
+								href="https://app.pumpevm.fun"
+								target="_blank"
+								rel="noopener noreferrer"
+								onClick={close}
+								className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-sm text-fg-muted hover:text-fg hover:bg-fill-hover transition-colors duration-150"
+							>
+								<span className="size-4 shrink-0 flex items-center justify-center">🚀</span>
+								Launchpad
+							</a>
+							<a
+								href="https://trade.pumpevm.fun"
+								target="_blank"
+								rel="noopener noreferrer"
+								onClick={close}
+								className="flex items-center gap-3 px-3 py-2.5 rounded-xs text-sm text-fg-muted hover:text-fg hover:bg-fill-hover transition-colors duration-150"
+							>
+								<span className="size-4 shrink-0 flex items-center justify-center">📈</span>
+								Trade x50
+							</a>
+							<div className="flex items-center justify-between px-3 py-2.5 rounded-xs text-sm text-fg-disabled">
+								<span className="flex items-center gap-3">
+									<span className="size-4 shrink-0 flex items-center justify-center">🔮</span>
+									Prediction
+								</span>
+								<Badge tone="neutral" size="xxs" className="text-fg-disabled">
+									<Trans>Soon</Trans>
+								</Badge>
+							</div>
 						</nav>
 					</div>
 
+					{/* Footer: Deposit/Connect, Settings, Theme */}
 					<div className="shrink-0 p-3 border-t border-stroke-weak/60 flex flex-col gap-2">
 						{isConnected ? (
 							<Button
